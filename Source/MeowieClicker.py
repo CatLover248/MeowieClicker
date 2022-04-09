@@ -25,7 +25,35 @@ SOFTWARE.
 from pyautogui import click as clickmouse
 from keyboard import is_pressed
 from random import randint
+import time
 
+<<<<<<< HEAD
+# -R = Offical release
+# -B = Beta build
+# -D = Developer build
+
+show_debug_information = False
+version = "V1-R"
+
+def startup():
+    print(" ---------------------------------")
+    print("| Meowie Clicker " + version + " by FATYCATY |")
+    print(" ---------------------------------")
+    print("MeowieClicker "+ version +" by FATYCATY")
+    print("Use R to enable Autoclicker and Z to disable Autoclicker.")
+    print("Warning: Make sure to not type in incorrect input values!")
+    try:
+        cps = int(input("CPS[1-8]: "))
+        show_debug_information = bool(input("Show Debug Information?[True/False]: "))
+        if show_debug_information != True or False:
+            print("Something went wrong, make sure to use the right options for inputs.\nQuiting in 5 seconds...")
+            time.sleep(5)
+            quit
+    except:
+        print("Something went wrong, make sure to use the right options for inputs.\nQuiting in 5 seconds...")
+        time.sleep(5)
+        quit("Quiting...")
+=======
 
 version = "V1-BETA"
 
@@ -37,6 +65,7 @@ def startup():
     print("MEOWIE CLICKER "+ version +" by FATYCATY")
 
     cps = int(input("CPS[1-8]: "))
+>>>>>>> b5ab36b8ee4083b0916260e83d9c96d16a4929a2
     return cps 
 
 def clicker(cps):
@@ -44,11 +73,18 @@ def clicker(cps):
     while True:
         if(is_pressed("r")):
             click = True
-            print(click)
+            if bool(show_debug_information):
+                print(click)
+            else:
+                continue
 
         if(is_pressed("z")):
             click = False
-            print(click)
+            if bool(show_debug_information):
+                print(click)
+            else:
+                continue
+
         if(click):
             clickmouse(interval=1.00/(cps*3), button="left")
             

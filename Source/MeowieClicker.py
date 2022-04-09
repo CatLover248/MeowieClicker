@@ -9,7 +9,7 @@ def startup():
     print("| MEOWIE CLICKER V1-BETA by FATYCATY |")
     print("--------------------------------------")
     print("Press R to enable AutoClicker and Z to disable AutoClicker!")
-    print("MEOWIE CLICKER"+ version +" by FATYCATY")
+    print("MEOWIE CLICKER "+ version +" by FATYCATY")
 
     cps = int(input("CPS[1-8]: "))
     return cps 

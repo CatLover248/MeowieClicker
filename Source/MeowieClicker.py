@@ -2,7 +2,7 @@ from pyautogui import click as clickmouse
 from keyboard import is_pressed
 from random import randint
 
-version = "V1-BETA1"
+version = "V1-BETA"
 
 def startup():
     print("--------------------------------------")

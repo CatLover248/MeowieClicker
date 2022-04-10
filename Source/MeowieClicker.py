@@ -33,7 +33,7 @@ import win32gui
 # -D = Developer 
 show_debug_information = False
 version = "V2-R"
-change_log = "- Added so that clicker only clicks in Minecraft(Lunar client, LabyMod, Badlion)\n- Partnerd up with EmpathyClient by LukeBTW\n- Added Custom Keybinds to AutoClicker\n- More code stuff..."
+change_log = "- Added so that clicker only clicks in Minecraft(Lunar client, LabyMod, Badlion)\n- Partnerd up with EmpathyClient by LukeBTW\n- Added Custom Keybinds to AutoClicker\n- More code Stuff"
 
 def get_focused_window():
 

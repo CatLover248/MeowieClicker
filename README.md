@@ -1,5 +1,5 @@
 # MeowieClicker
-- A Open Source Minecraft Focused AutoClicker and Utility client.
+- A Open Source Windows Only Minecraft AutoClicker and External Utility client.
 
 Join the Discord Server: https://discord.gg/D9nbH3MSq4 .
 

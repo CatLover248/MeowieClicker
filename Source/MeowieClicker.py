@@ -26,76 +26,75 @@ from pyautogui import click as clickmouse
 from keyboard import is_pressed
 from random import randint
 from time import sleep
-from win32gui import GetWindowText, GetForegroundWindow
+import win32gui
 
 # -R = Offical release
 # -B = Beta build
-# -D = Developer build
-
-version = "V1-R"
-
+# -D = Developer 
 show_debug_information = False
-version = "V1-R"
+version = "V2-R"
+change_log = "- Added so that clicker only clicks in Minecraft(Lunar client, LabyMod, Badlion)\n- Partnerd up with EmpathyClient by LukeBTW\n- Added Custom Keybinds to AutoClicker\n- More code stuff..."
 
-# Dosent seem to work :/
-#def get_focused_window():
-#    return GetWindowText(GetForegroundWindow())
+def get_focused_window():
+
+    window = win32gui.GetForegroundWindow()
+    active_window_name = win32gui.GetWindowText(window)
+    return active_window_name
 
 def startup():
     
     print(" ---------------------------------")
     print("| Meowie Clicker " + version + " by FATYCATY |")
     print(" ---------------------------------")
-    print("MeowieClicker "+ version +" by FATYCATY")
+    print("MeowieClicker "+ version +" by FatyCaty")
+    print("> Change Log for " + version + "\n" + change_log + "")
     print("Use R to enable Autoclicker and Z to disable Autoclicker.")
     print("Warning: Make sure to not type in incorrect input values!")
-    try:
-        cps = int(input("CPS[1-8]: "))
-        show_debug_information = bool(input("Show Debug Information?[True/False]: "))
-        if show_debug_information != True or False:
-            print("Something went wrong, make sure to use the right options for inputs.\nQuiting in 5 seconds...")
-            sleep(5)
-            quit
-    except:
-        print("Something went wrong, make sure to use the right options for inputs.\nQuiting in 5 seconds...")
-        sleep(5)
-        quit("Quiting...")
-
-
-
-
-
-
-def startup():
-    print("--------------------------------------")
-    print("| MEOWIE CLICKER V1-BETA by FATYCATY |")
-    print("--------------------------------------")
-    print("Press R to enable AutoClicker and Z to disable AutoClicker!")
-    print("MEOWIE CLICKER "+ version +" by FATYCATY")
-
+    
     cps = int(input("CPS[1-8]: "))
-    return cps 
+    show_debug_information = input("Show Debug Information?[True/False]: ")
+    keybind_autoclicker_start = input("Autoclicker keybind start[ex: R]: ")
+    keybind_autoclicker_stop = input("Autoclicker keybind stop(Cannot be same key as start)[ex: Z]: ")
+    #if ((show_debug_information.lower().strip() != "true" or "false") or keybind_autoclicker_start.len() and keybind_autoclicker_stop.len() == 1):
+        #print("Something went wrong, make sure to use the right options for inputs and only choose one character for your Autoclicker keybind.\nQuiting in 5 seconds...")
+        #sleep(5)
+        #quit()
+    
+    
+    return [cps, show_debug_information, keybind_autoclicker_start, keybind_autoclicker_stop]
 
-def clicker(cps):
+#def clicker(cps,show_debug_information ,keybind_autoclicker_start,keybind_autoclicker_stop):
+def clicker(args_to_clicker):
+
+    cps = args_to_clicker[0]
+    show_debug_information = args_to_clicker[1]
+    keybind_autoclicker_start = args_to_clicker[2]
+    keybind_autoclicker_stop = args_to_clicker[3]
+
     click = False
     while True:
-        if(is_pressed("r")):
+        
+        current_focused_window = get_focused_window()
+
+        if(is_pressed(str(keybind_autoclicker_start))):
             click = True
             if bool(show_debug_information):
                 print(click)
             else:
                 continue
 
-        if(is_pressed("z")):
+        if(is_pressed(str(keybind_autoclicker_stop))):
             click = False
             if bool(show_debug_information):
                 print(click)
             else:
                 continue
-
-        if(click):
+        
+        if(click and (("Minecraft" in current_focused_window) or ("Lunar" in current_focused_window) or ("Badlion" in current_focused_window))):
             clickmouse(interval=1.00/(cps*3), button="left")
             
+        
+
 
 def main():
     clicker(startup())

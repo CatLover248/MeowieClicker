@@ -25,17 +25,24 @@ SOFTWARE.
 from pyautogui import click as clickmouse
 from keyboard import is_pressed
 from random import randint
-import time
+from time import sleep
+from win32gui import GetWindowText, GetForegroundWindow
 
-<<<<<<< HEAD
 # -R = Offical release
 # -B = Beta build
 # -D = Developer build
 
+version = "V1-R"
+
 show_debug_information = False
 version = "V1-R"
 
+# Dosent seem to work :/
+#def get_focused_window():
+#    return GetWindowText(GetForegroundWindow())
+
 def startup():
+    
     print(" ---------------------------------")
     print("| Meowie Clicker " + version + " by FATYCATY |")
     print(" ---------------------------------")
@@ -47,15 +54,17 @@ def startup():
         show_debug_information = bool(input("Show Debug Information?[True/False]: "))
         if show_debug_information != True or False:
             print("Something went wrong, make sure to use the right options for inputs.\nQuiting in 5 seconds...")
-            time.sleep(5)
+            sleep(5)
             quit
     except:
         print("Something went wrong, make sure to use the right options for inputs.\nQuiting in 5 seconds...")
-        time.sleep(5)
+        sleep(5)
         quit("Quiting...")
-=======
 
-version = "V1-BETA"
+
+
+
+
 
 def startup():
     print("--------------------------------------")
@@ -65,7 +74,6 @@ def startup():
     print("MEOWIE CLICKER "+ version +" by FATYCATY")
 
     cps = int(input("CPS[1-8]: "))
->>>>>>> b5ab36b8ee4083b0916260e83d9c96d16a4929a2
     return cps 
 
 def clicker(cps):

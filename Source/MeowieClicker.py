@@ -27,6 +27,7 @@ from keyboard import is_pressed
 from random import randint
 from time import sleep
 import win32gui
+from tkinter import *
 
 # -R = Offical release
 # -B = Beta build
@@ -34,6 +35,7 @@ import win32gui
 show_debug_information = False
 version = "V2-R"
 change_log = "- Added so that clicker only clicks in Minecraft(Lunar client, LabyMod, Badlion)\n- Partnerd up with EmpathyClient by LukeBTW\n- Added Custom Keybinds to AutoClicker\n- More code Stuff"
+
 
 def get_focused_window():
 
@@ -46,6 +48,10 @@ def startup():
     print(" ---------------------------------")
     print("| Meowie Clicker " + version + " by FATYCATY |")
     print(" ---------------------------------")
+    print("   /\\_________________/\\")
+    print("  /                      \\")
+    print(" /     O             O    \\")
+    print("/             w            \\")
     print("MeowieClicker "+ version +" by FatyCaty")
     print("> Change Log for " + version + "\n" + change_log + "")
     print("Use R to enable Autoclicker and Z to disable Autoclicker.")

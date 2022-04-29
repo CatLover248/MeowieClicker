@@ -22,43 +22,54 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+
+from ctypes.wintypes import LPARAM
 from pyautogui import click as clickmouse
 from keyboard import is_pressed
-from random import randint
+from random import uniform as randdecimalnum
 from time import sleep
 import win32gui
-from tkinter import *
+import win32con
+
 
 # -R = Offical release
 # -B = Beta build
 # -D = Developer 
 show_debug_information = False
-version = "V3-R"
-change_log = "-Added cute cat console art"
+version = "V4-R"
+change_log = "-New clicking method(bypasses Lunar)\n-Custom target windows\n-Code improvments\n-Support for Cps higher than 8\n-Cute cat art fixed\nCps Randomization"
 
+def get_cursor_pos():
+    return win32gui.GetCursorPos()
 
-def get_focused_window():
+def get_focused_window(window_title):
 
-    window = win32gui.GetForegroundWindow()
-    active_window_name = win32gui.GetWindowText(window)
-    return active_window_name
+    #window = win32gui.GetForegroundWindow()
+    #active_window_name = win32gui.GetWindowText(window)
+    #return active_window_name
+
+    hWnd = win32gui.FindWindow(None, str(window_title))
+    return hWnd
 
 def startup():
+
     
     print(" ---------------------------------")
     print("| Meowie Clicker " + version + " by FATYCATY |")
     print(" ---------------------------------")
     print("   /\\_________________/\\")
-    print("  /                      \\")
-    print(" /     O             O    \\")
-    print("/             w            \\")
+    print("  /                     \\")
+    print(" /     O             O   \\")
+    print("/             w           \\")
     print("MeowieClicker "+ version +" by FatyCaty")
     print("> Change Log for " + version + "\n" + change_log + "")
     print("Use R to enable Autoclicker and Z to disable Autoclicker.")
     print("Warning: Make sure to not type in incorrect input values!")
     
-    cps = int(input("CPS[1-8]: "))
+    cps = float(input("CPS[1-100]: "))
+    target_window = input("Window for clicker to target(case sensitive)[example: Minecraft 1.8.9]: ")
     show_debug_information = input("Show Debug Information?[True/False]: ")
+    randomize_cps = input("Randomize Cps?[True/False]: ")
     keybind_autoclicker_start = input("Autoclicker keybind start[ex: R]: ")
     keybind_autoclicker_stop = input("Autoclicker keybind stop(Cannot be same key as start)[ex: Z]: ")
     #if ((show_debug_information.lower().strip() != "true" or "false") or keybind_autoclicker_start.len() and keybind_autoclicker_stop.len() == 1):
@@ -67,21 +78,20 @@ def startup():
         #quit()
     
     
-    return [cps, show_debug_information, keybind_autoclicker_start, keybind_autoclicker_stop]
+    return [cps, show_debug_information, target_window, randomize_cps,keybind_autoclicker_start, keybind_autoclicker_stop]
 
 #def clicker(cps,show_debug_information ,keybind_autoclicker_start,keybind_autoclicker_stop):
 def clicker(args_to_clicker):
-
+    
     cps = args_to_clicker[0]
     show_debug_information = args_to_clicker[1]
-    keybind_autoclicker_start = args_to_clicker[2]
-    keybind_autoclicker_stop = args_to_clicker[3]
+    target_window = str(args_to_clicker[2])
+    randomize_cps = args_to_clicker[3]
+    keybind_autoclicker_start = args_to_clicker[4]
+    keybind_autoclicker_stop = args_to_clicker[5]
 
     click = False
     while True:
-        
-        current_focused_window = get_focused_window()
-
         if(is_pressed(str(keybind_autoclicker_start))):
             click = True
             if bool(show_debug_information):
@@ -89,21 +99,30 @@ def clicker(args_to_clicker):
             else:
                 continue
 
-        if(is_pressed(str(keybind_autoclicker_stop))):
+        if is_pressed(str(keybind_autoclicker_stop)):
             click = False
             if bool(show_debug_information):
                 print(click)
             else:
                 continue
-        
-        if(click and (("Minecraft" in current_focused_window) or ("Lunar" in current_focused_window) or ("Badlion" in current_focused_window))):
-            clickmouse(interval=1.00/(cps*3), button="left")
+        #Lunar window: Lunar Client (1.8.9-c888646/master)
+        if click:
+            #clickmouse(interval=1.00/(cps*3), button="left")
+            win32gui.PostMessage(get_focused_window(target_window), win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, None)
+            win32gui.PostMessage(get_focused_window(target_window), win32con.WM_LBUTTONUP, win32con.MK_LBUTTON, None)
+            if randomize_cps == "True":
+                sleep((1/cps) + randdecimalnum(0.001,0.01))
+            else:
+                sleep(1/cps)
+            
             
         
 
 
 def main():
     clicker(startup())
+
+    
 
 
 

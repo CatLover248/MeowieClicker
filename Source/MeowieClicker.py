@@ -23,21 +23,31 @@ SOFTWARE.
 """
 
 
-from ctypes.wintypes import LPARAM
-from pyautogui import click as clickmouse
+#from pyautogui import click as clickmouse
 from keyboard import is_pressed
 from random import uniform as randdecimalnum
 from time import sleep
 import win32gui
 import win32con
+from tkinter import *
+import threading
 
+class Clicker:
+    def __init__(self,cps, show_debug_information, target_window, randomize_cps,keybind_autoclicker_start, keybind_autoclicker_stop):
+        self.cps = cps
+        self.show_debug_information = show_debug_information
+        self.target_window = target_window
+        self.randomize_cps = randomize_cps
+        self.keybind_autoclicker_start = keybind_autoclicker_start
+        self.keybind_autoclicker_stop = keybind_autoclicker_stop
+        self.click = False
 
 # -R = Offical release
 # -B = Beta build
-# -D = Developer 
-show_debug_information = False
-version = "V5-R"
-change_log = "-New Window targetting method\n-Other Code Improvments"
+# -D = Developer
+
+version = "V6-R"
+change_log = "-High CPU usage FIXED.\n-Clicker class and new way to store clicker arguments."
 
 def get_cursor_pos():
     return win32gui.GetCursorPos()
@@ -54,7 +64,6 @@ def get_focused_window_hwnd():
     return hWnd
 
 def startup():
-
 
     print(" ---------------------------------")
     print("| Meowie Clicker " + version + " by FATYCATY |")
@@ -73,52 +82,39 @@ def startup():
     randomize_cps = input("Randomize Cps?[True/False]: ")
     keybind_autoclicker_start = input("Autoclicker keybind start[ex: R]: ")
     keybind_autoclicker_stop = input("Autoclicker keybind stop(Cannot be same key as start)[ex: Z]: ")
-    
 
-    
-    
-    return [cps, show_debug_information, target_window, randomize_cps,keybind_autoclicker_start, keybind_autoclicker_stop]
+
+    return Clicker(cps, show_debug_information, target_window, randomize_cps,keybind_autoclicker_start, keybind_autoclicker_stop)
+
 
 #def clicker(cps,show_debug_information ,keybind_autoclicker_start,keybind_autoclicker_stop):
-def clicker(args_to_clicker):
-    
-    cps = args_to_clicker[0]
-    show_debug_information = args_to_clicker[1]
-    target_window = str(args_to_clicker[2])
-    randomize_cps = args_to_clicker[3]
-    keybind_autoclicker_start = args_to_clicker[4]
-    keybind_autoclicker_stop = args_to_clicker[5]
+def clicker(clicker_obj):  
 
-
-
-    click = False
     while True:
         current_focused_window_title = str(get_focused_window_title())
-        if bool(show_debug_information):
-                print(current_focused_window_title)
-        if(is_pressed(str(keybind_autoclicker_start))):
-            click = True
-            if bool(show_debug_information):
-                print(click)
+        if(is_pressed(str(clicker_obj.keybind_autoclicker_start))):
+            clicker_obj.click = True
+            if bool(clicker_obj.show_debug_information):
+                print(clicker_obj.click)
             else:
                 continue
 
-        if is_pressed(str(keybind_autoclicker_stop)):
-            click = False
-            if bool(show_debug_information):
-                print(click)
+        if is_pressed(str(clicker_obj.keybind_autoclicker_stop)):
+            clicker_obj.click = False
+            if bool(clicker_obj.show_debug_information):
+                print(clicker_obj.click)
             else:
                 continue
 
-        if click:
-            if  target_window in current_focused_window_title:
+        if clicker_obj.click:
+            if  clicker_obj.target_window in current_focused_window_title:
                 #clickmouse(interval=1.00/(cps*3), button="left")
                 win32gui.PostMessage(get_focused_window_hwnd(), win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, None)
                 win32gui.PostMessage(get_focused_window_hwnd(), win32con.WM_LBUTTONUP, win32con.MK_LBUTTON, None)
-                if randomize_cps == "True":
-                    sleep((1/cps) + randdecimalnum(0.001,0.01))
+                if clicker_obj.randomize_cps == "True":
+                    sleep((1/clicker_obj.cps) + randdecimalnum(0.001,0.01))
                 else:
-                    sleep(1/cps)
+                    sleep(1/clicker_obj.cps)
 
 def main():
     clicker(startup())
